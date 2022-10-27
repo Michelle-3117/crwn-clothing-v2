@@ -1,0 +1,61 @@
+import { initializeApp } from 'firebase/app'
+import {
+    getAuth,
+    signInWithRedirect,
+    signInWithPopup,
+    GoogleAuthProvider
+}
+from 'firebase/auth'
+import {
+    doc,
+    getDoc,
+    setDoc,
+    getFirestore
+} from 'firebase/firestore'
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDQGkszGgpbcVHJrV7raxXQ9jIXxV9_wmM",
+  authDomain: "crown-clothingdb-9ea82.firebaseapp.com",
+  projectId: "crown-clothingdb-9ea82",
+  storageBucket: "crown-clothingdb-9ea82.appspot.com",
+  messagingSenderId: "213781742750",
+  appId: "1:213781742750:web:35f7b19ac47cca2152678f",
+};
+
+// Initialize Firebase
+const firebaseApp = initializeApp(firebaseConfig);
+const provider = new GoogleAuthProvider();
+
+provider.setCustomParameters({
+    prompt: "select_account",
+})
+
+export const auth = getAuth();
+
+export const signInWithGooglePopup = () => signInWithPopup(auth, provider)
+
+export const db = getFirestore();
+
+export const createUserDocumentFromAuth = async (userAuth) => {
+    const userDocRef = doc(db, 'users', userAuth.uid)
+    // console.log(userDocRef)
+
+    const userSnapShot = await getDoc(userDocRef)
+
+    if (!userSnapShot.exists()) {
+        const { displayName, email } = userAuth;
+        const createdAt = new Date();
+
+        try {
+            await setDoc(userDocRef, {
+                displayName,
+                email,
+                createdAt
+            })
+        } catch (error) {
+            console.log('error creating the user', error.message)
+        }
+    }
+    return userDocRef;
+
+}
