@@ -8,6 +8,7 @@ import FormInput from "../form-input/FormInput";
 import Button from "../button/Button"
 import './signup.scss'
 
+
 const defaultFormFields = {
   displayName: "",
   email: "",

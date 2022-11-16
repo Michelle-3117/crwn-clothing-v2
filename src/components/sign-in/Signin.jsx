@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState} from "react";
 import {
   signInWithGooglePopup,
   createUserDocumentFromAuth,
@@ -7,7 +7,7 @@ import {
 } from "../../utils/firebase/Firebase";
 import FormInput from "../form-input/FormInput";
 import Button from "../button/Button"
-import './signin.scss'
+import './signin.scss';
 
 const defaultFormFields = {
   email: "",
@@ -17,13 +17,14 @@ const Signin = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
+ 
+
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   }
 
   const signInWithGoogle = async () => { 
-        const {user} = await signInWithGooglePopup();
-        await createUserDocumentFromAuth(user)
+      await signInWithGooglePopup();
     }
 
     const handleChange = (e) => {
@@ -33,11 +34,13 @@ const Signin = () => {
     };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+
     try {
-      const response = await signinAuthForEmailAndPassword(email, password)
-      console.log(response)
+      const { user } = await signinAuthForEmailAndPassword(email, password);
+    
       resetFormFields()
+
     } catch (error) {
       alert(error.code)
       console.log("An error was encountered", error)
@@ -47,7 +50,7 @@ const Signin = () => {
       <div className="sign-in-container">
         <h1> Already have an account?</h1>
         <span>Sign in with your Email and Password</span>
-        <form action="" onSubmit={ handleSubmit }>
+        <form action="" onSubmit={handleSubmit}>
           <FormInput
             label="Email"
             type="email"
