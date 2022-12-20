@@ -7,17 +7,23 @@ import {
 import FormInput from "../form-input/FormInput";
 import Button, { BUTTON_TYPE_CLASS} from '../button/Button.jsx';
 import './signin.scss';
+import { useNavigate } from 'react-router-dom'
 
 const defaultFormFields = {
   email: "",
   password: "",
 };
 const Signin = () => {
+  const navigate = useNavigate();
+
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
- 
 
+  const navigateToShop = () => {
+    // 👇️ navigate to /contacts
+    navigate('/shop/*');
+  };
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   }
@@ -68,7 +74,9 @@ const Signin = () => {
             required
           />
           <div className="buttons-container">
-            <Button type="submit">Sign in</Button>
+            <Button type="submit" onClick={navigateToShop}>
+              Sign in
+            </Button>
             <Button type="button" buttonType={BUTTON_TYPE_CLASS.google} onClick={signInWithGoogle}>
               Google sign in
             </Button>
